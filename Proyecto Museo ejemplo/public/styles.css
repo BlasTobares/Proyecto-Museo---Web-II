@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+  }
+  
+  h1 {
+      color: grey;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+  
+    header {
+      display:block;
+      background-color: black;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    fieldset {
+        background-image: url(imagenbanner.jpg);
+        top: 0;
+        height: 25rem;
+        background-size: cover;
+        background-position: center;
+      }
+      .container,
+      .boton {
+      text-align: justify;
+        max-width: 200px;
+        margin: 44%;
+        margin-top: 100px;
+        border-radius: 22px;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .boton{
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: rgb(196, 139, 41);
+      cursor: pointer;
+      border-radius: 10px;
+    }  
+    
+      .content-banner {
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        max-width: 90rem;
+        display: flex;
+        justify-content: center;
+    
+      }
+    
+    
+    
+      .imagen {
+        width: 150px;
+        height: 150px;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+#buscador {
+    display: flex;
+    flex-direction: row;
+}
+
+#buscador form {
+    display: flex;
+    flex-direction: row;
+}
+
+#buscador .input {
+    display: flex;
+    flex-direction: column;
+}
+
+#grilla {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: rgb(196, 139, 41);
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#grilla img {
+    width: 250px;
+    height: 250px;
+}
+
+#grilla .objeto {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    text-align: center;
+    background-color: bisque;
+}
+
+#grilla .objeto:hover {
+    transform: scale(1.1);
+}
+
+#grilla .objeto .titulo {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
