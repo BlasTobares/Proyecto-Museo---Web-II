@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 /*const { Translate } = require("node-google-translate-skidz");*/
 const app = express();
 const port = 3000;
@@ -23,7 +23,7 @@ app.get("/traducir", (req, res) => {
 });
 */
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.send('Hello World!');
 });
 
