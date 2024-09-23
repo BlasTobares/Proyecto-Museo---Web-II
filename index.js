@@ -6,7 +6,7 @@ const port = 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-/*
+
 app.get("/traducir", (req, res) => {
 
     const titulo = req.body.titulo;
@@ -21,12 +21,12 @@ app.get("/traducir", (req, res) => {
     res.json({ textoTraducido : result.translation });
 });
 });
-*/
 
-app.get("/", (req, res) => {
+
+/*app.get("/", (req, res) => {
     res.send('Hello World!');
 });
-
+*/
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
