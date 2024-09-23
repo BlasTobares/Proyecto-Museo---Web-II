@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
         { 
-            "src": "Proyecto-Museo-Ejemplo/public/index.js", 
+            "src": "Proyecto-Museo-Ejemplo/index.js", 
             "use":"@vercel/node"
             }
         ],
