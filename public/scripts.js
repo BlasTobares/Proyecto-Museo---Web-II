@@ -94,7 +94,7 @@ function fetchDepartamentos() {
     }
 */
 
-async function traducir(titulo, cultura, dinastia) { 
+/*async function traducir(titulo, cultura, dinastia) { 
     try {
         const resp = await fetch('/traducir', {
             method: 'POST',
@@ -111,6 +111,29 @@ async function traducir(titulo, cultura, dinastia) {
         const data = await resp.json();
         console.log(data);
         return data;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+    */
+
+async function traducir(texto) {
+    try {
+        const resp = await fetch(`/traducir/${encodeURIComponent(texto)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!resp.ok) {
+            throw new Error('Error al traducir');
+        }
+
+        const data = await resp.json();
+        console.log(data.traduccion); // Muestra la traducción en la consola
+        return data.traduccion;
 
     } catch (error) {
         console.error('Error:', error);
