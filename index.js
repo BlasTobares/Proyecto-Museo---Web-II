@@ -6,8 +6,23 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
+app.post('/translate', (req, res) => {
+    const { text, targetLang } = req.body;
 
-app.get("/traducir", (req, res) => {
+    translate({
+        text: text,
+        source: 'en', // Idioma de origen (Inglés)
+        target: targetLang, // Idioma de destino (Español)
+    }, (result) => {
+        if (result && result.translation) {
+            res.json({ translatedText: result.translation });
+        } else {
+            res.status(500).json({ error: 'Error al traducir el texto' });
+        }
+    });
+});
+
+/*app.get("/traducir", (req, res) => {
 
     const titulo = req.body.titulo;
     const cultura = req.body.cultura;
@@ -21,7 +36,7 @@ app.get("/traducir", (req, res) => {
     res.json({ textoTraducido : result.translation });
 });
 });
-
+*/
 
 app.get("/", (req, res) => {
     res.send('Hello World!');
