@@ -8,7 +8,7 @@ app.use(express.json());
 
 
 
-app.get("/traducir", (req, res) => {
+app.post("/traducir", (req, res) => {
 
     const {titulo, cultura, dinastia} = req.body.titulo;
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '')
