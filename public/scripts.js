@@ -75,7 +75,7 @@ function fetchDepartamentos() {
 
     async function traducir(titulo, cultura, dinastia) {
         const resp = await fetch('/traducir', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
