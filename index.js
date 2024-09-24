@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-
+await traduccion(objetos);
 
 /*app.post("/traducir", (req, res) => {
 
@@ -32,7 +32,7 @@ app.use(express.json());
 });
 */
 
-app.get("/traducir/:texto", (req, res) => {
+/*app.get("/traducir/:texto", (req, res) => {
     
 translate({
     text: req.params.texto,
@@ -43,7 +43,55 @@ translate({
   });
 
 });
+*/
 
+async function traduccion(objetos) {
+    for (const element of objetos) {
+      const promises = [];
+  
+      if (element.title) {
+        let texto = element.title;
+        promises.push(
+          translate({
+            text: texto,
+            source: "en",
+            target: "es",
+          }).then((result) => {
+            element.title = result.translation;
+          })
+        );
+      }
+  
+      if (element.dynasty) {
+        let texto = element.dynasty;
+        promises.push(
+          translate({
+            text: texto,
+            source: "en",
+            target: "es",
+          }).then((result) => {
+            element.dynasty = result.translation;
+          })
+        );
+      }
+  
+      if (element.culture) {
+        let texto = element.culture;
+        promises.push(
+          translate({
+            text: texto,
+            source: "en",
+            target: "es",
+          }).then((result) => {
+            element.culture = result.translation;
+          })
+        );
+      }
+  
+      // todas las promesas de forma asincronica
+      await Promise.all(promises);
+    }
+  }
 
 app.get("/", (req, res) => {
     res.send('Hello World!');

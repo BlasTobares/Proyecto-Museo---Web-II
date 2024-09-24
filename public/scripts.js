@@ -118,7 +118,7 @@ function fetchDepartamentos() {
 }
     */
 
-async function traducir(texto) {
+/*async function traducir(texto) {
     try {
         const resp = await fetch(`/traducir/${encodeURIComponent(texto)}`, {
             method: 'GET',
@@ -139,3 +139,4 @@ async function traducir(texto) {
         console.error('Error:', error);
     }
 }
+    */
