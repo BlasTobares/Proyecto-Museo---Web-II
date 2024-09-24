@@ -61,7 +61,30 @@
       }
 
 
-
+      .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .pagination button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        border: none;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Suaviza el cambio de color */
+    }
+    
+    .pagination button:hover, .pagination button:focus {
+        background-color: var(--hover-color);
+        outline: none;
+    }
+    
+    .pagination button:disabled {
+        background-color: var(--disabled-color);
+    }
 
 
 

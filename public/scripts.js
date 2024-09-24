@@ -8,6 +8,9 @@ const URL_SEARCH_HAS_IMAGES = "https://collectionapi.metmuseum.org/public/collec
 
 const URL_SEARCH = "https://collectionapi.metmuseum.org/public/collection/v1/search";
 
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+
 function fetchDepartamentos() {
     fetch(URL_DEPARTAMENTOS)
     .then((response) => response.json())
@@ -156,3 +159,19 @@ async function translateText(text, targetLang) {
         return text; // Devuelve el texto original si hay un error
     }
 }
+
+prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        loader.style.display = 'block'; // Mostrar el loader al cambiar de página
+        displayObjects();
+    }
+});
+
+nextPageBtn.addEventListener('click', () => {
+    if (currentPage * itemsPerPage < totalItems) {
+        currentPage++;
+        loader.style.display = 'block'; // Mostrar el loader al cambiar de página
+        displayObjects();
+    }
+});
