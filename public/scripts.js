@@ -73,19 +73,22 @@ function fetchDepartamentos() {
              });
     });
 
-    async function translateText(text, targetLang) {
-        try {
-            const response = await fetch('/translate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: text, targetLang: targetLang })
-            });
-            const result = await response.json();
-            return result.translatedText;
-        } catch (error) {
-            console.error('Error al traducir el texto:', error);
-            return text; // Devuelve el texto original si hay un error
-        }
+    async function traducir(titulo, cultura, dinastia) {
+        const resp = await fetch('/traducir', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo,
+                cultura,
+                dinastia
+            })
+        });
+        if (!resp.ok) {
+            throw new Error('Error al traducir');
+        };
+            const data = await resp.json();
+            console.log(data);
+            return data;
     }
