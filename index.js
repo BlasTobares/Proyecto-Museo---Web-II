@@ -8,7 +8,7 @@ app.use(express.json());
 
 
 
-app.post("/traducir", (req, res) => {
+/*app.post("/traducir", (req, res) => {
 
     const {titulo, cultura, dinastia} = req.body.titulo;
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '')
@@ -30,7 +30,18 @@ app.post("/traducir", (req, res) => {
         });
     })
 });
+*/
+app.get("/traducir/:texto", (req, res) => {
+    
+translate({
+    text: req.params.texto,
+    source: 'es',
+    target: 'en'
+  }, function(result) {
+    res.json({traduccion: result.translation});
+  });
 
+});
 
 app.get("/", (req, res) => {
     res.send('Hello World!');
