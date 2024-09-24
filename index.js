@@ -12,7 +12,7 @@ app.post('/translate', (req, res) => {
     translate({
         text: text,
         source: 'en', // Idioma de origen (Inglés)
-        target: targetLang, // Idioma de destino (Español)
+        target: 'es', // Idioma de destino (Español)
     }, (result) => {
         if (result && result.translation) {
             res.json({ translatedText: result.translation });
