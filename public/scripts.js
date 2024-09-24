@@ -73,7 +73,7 @@ function fetchDepartamentos() {
              });
     });
 
-    async function traducir(titulo, cultura, dinastia) {
+/*    async function traducir(titulo, cultura, dinastia) {
         const resp = await fetch('/traducir', {
             method: 'POST',
             headers: {
@@ -92,3 +92,27 @@ function fetchDepartamentos() {
             console.log(data);
             return data;
     }
+*/
+
+async function traducir(titulo, cultura, dinastia) { 
+    try {
+        const resp = await fetch('/traducir', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ titulo, cultura, dinastia })
+        });
+
+        if (!resp.ok) {
+            throw new Error('Error al traducir');
+        }
+
+        const data = await resp.json();
+        console.log(data);
+        return data;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
