@@ -8,8 +8,7 @@ const URL_SEARCH_HAS_IMAGES = "https://collectionapi.metmuseum.org/public/collec
 
 const URL_SEARCH = "https://collectionapi.metmuseum.org/public/collection/v1/search";
 
-const prevPageBtn = document.getElementById('prevPage');
-const nextPageBtn = document.getElementById('nextPage');
+const PAGE = 0;
 
 function fetchDepartamentos() {
     fetch(URL_DEPARTAMENTOS)
@@ -51,7 +50,7 @@ function fetchDepartamentos() {
     fetch(URL_SEARCH_HAS_IMAGES)
     .then((response) => response.json())
     .then((data) => {
-        fetchObjetos(data.objectIDs.slice(0,20));
+        fetchObjetos(data.objectIDs.slice(PAGE*20, (PAGE + 1)*20));
     });
 
     document.getElementById("buscar").addEventListener("click", (event) => {
@@ -143,7 +142,7 @@ function fetchDepartamentos() {
     }
 }
     */
-async function translateText(text, targetLang) {
+/*async function translateText(text, targetLang) {
     try {
         const response = await fetch('/translate', {
             method: 'POST',
@@ -157,21 +156,8 @@ async function translateText(text, targetLang) {
     } catch (error) {
         console.error('Error al traducir el texto:', error);
         return text; // Devuelve el texto original si hay un error
-    }
+ 
+        } 
 }
 
-prevPageBtn.addEventListener('click', () => {
-    if (currentPage > 1) {
-        currentPage--;
-        loader.style.display = 'block'; // Mostrar el loader al cambiar de página
-        displayObjects();
-    }
-});
-
-nextPageBtn.addEventListener('click', () => {
-    if (currentPage * itemsPerPage < totalItems) {
-        currentPage++;
-        loader.style.display = 'block'; // Mostrar el loader al cambiar de página
-        displayObjects();
-    }
-});
+*/
