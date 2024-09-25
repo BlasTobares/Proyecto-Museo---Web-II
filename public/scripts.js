@@ -27,7 +27,7 @@ function fetchDepartamentos() {
 });
 }
 
-    function fetchObjetos(objectIDs) {
+/*    function fetchObjetos(objectIDs) {
 
         let objetosHtml = "";
         let totalFetched = 0;
@@ -55,6 +55,43 @@ function fetchDepartamentos() {
             });
         }
     }
+*/
+function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then((data) => {
+                // Verificar si hay imágenes adicionales
+                let additionalImagesHtml = '';
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                }
+
+                // Construir el HTML de cada objeto
+                objetosHtml += `
+                <div class="objeto">
+                    <img src="${
+                        data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
+                    }" />
+                    <h4 class="titulo">${data.title}</h4>
+                    <h6 class="cultura">${data.culture != "" ? data.culture : "Sin cultura"}</h6>
+                    <h6 class="dinastia">${data.dynasty != "" ? data.dynasty : "Sin dinastia"}</h6>
+                    ${additionalImagesHtml}
+                </div>`;
+
+                // Actualizar el contenido de la grilla
+                document.getElementById("grilla").innerHTML = objetosHtml;
+                totalFetched++;
+
+                if (totalFetched === objectIDs.length) {
+                    toggleButtons();
+                }
+            });
+    }
+}
 
     fetchDepartamentos();
 
@@ -132,7 +169,47 @@ function fetchDepartamentos() {
 
 
 
-
+    function verMasImagenes(objectId) {
+        const modal = document.getElementById("imageModal");
+        const modalImages = document.getElementById("modal-images");
+    
+        // Limpiar el contenido anterior del modal
+        modalImages.innerHTML = "";
+    
+        // Fetch para obtener las imágenes adicionales del objeto
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    data.additionalImages.forEach((imageUrl) => {
+                        const imgElement = document.createElement("img");
+                        imgElement.src = imageUrl;
+                        modalImages.appendChild(imgElement);
+                    });
+                } else {
+                    modalImages.innerHTML = "<p>No hay imágenes adicionales disponibles.</p>";
+                }
+    
+                // Mostrar el modal
+                modal.style.display = "block";
+            });
+    }
+    
+    // Código para cerrar el modal
+    const modal = document.getElementById("imageModal");
+    const closeBtn = document.getElementsByClassName("close")[0];
+    
+    // Cerrar el modal cuando se haga clic en la "x"
+    closeBtn.onclick = function () {
+        modal.style.display = "none";
+    };
+    
+    // Cerrar el modal cuando se haga clic fuera del contenido del modal
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
 
 
 /*    async function fetchObjetos(objectIDs) {
