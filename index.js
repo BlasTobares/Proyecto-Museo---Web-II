@@ -8,9 +8,9 @@ app.use(express.json());
 
 await traduccion(objetos);
 
-/*app.post("/traducir", (req, res) => {
+app.post("/traducir", (req, res) => {
 
-    const {titulo, cultura, dinastia} = req.body;
+    const { titulo, cultura, dinastia } = req.body;
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '')
 
     Promise.all(textos.map(texto => 
@@ -30,7 +30,7 @@ await traduccion(objetos);
         });
     })
 });
-*/
+
 
 /*app.get("/traducir/:texto", (req, res) => {
     
@@ -61,19 +61,7 @@ translate({
     });
 });
 */
-app.get("/departamento", (req, res) => {
-    fetch(URL_DEPARTAMENTOS)
-        .then((response) => response.json())
-        .then((data) => {
-            translate({
-                text: JSON.stringify(data),
-                source: 'en',
-                target: 'es'
-            }, function (result) {
-                res.send(JSON.parse(result.translation));
-            });
-        });
-});
+
 
 app.get("/", (req, res) => {
     res.send('Hello World!');

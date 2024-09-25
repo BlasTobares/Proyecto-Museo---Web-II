@@ -126,10 +126,13 @@ function fetchDepartamentos() {
     // Inicializar con la primera página al cargar la página
     fetchPage(PAGE);
 
-/*    async function traducir(titulo, cultura, dinastia) {
+    async function traducir(titulo, cultura, dinastia) {
+
         const resp = await fetch('/traducir', {
+
             method: 'POST',
             headers: {
+
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -142,10 +145,9 @@ function fetchDepartamentos() {
             throw new Error('Error al traducir');
         };
             const data = await resp.json();
-            console.log(data);
-            return data;
+            
     }
-*/
+
 
 /*async function traducir(titulo, cultura, dinastia) { 
     try {
