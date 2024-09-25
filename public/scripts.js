@@ -33,7 +33,36 @@ function fetchDepartamentos() {
         for (objectId of objectIDs) {
             fetch(URL_OBJETO + objectId)
             .then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
+                // Obtener los textos originales
+                const titulo = data.title || "Sin título";
+                const cultura = data.culture || "Sin cultura";
+                const dinastia = data.dynasty || "Sin dinastía";
+    
+                // Traducir los textos automáticamente
+                const traducciones = await traducir(titulo, cultura, dinastia);
+    
+                // Construir el HTML con los textos traducidos
+                objetosHtml += `<div class="objeto"> 
+                    <img src="${
+                        data.primaryImageSmall !== "" ? data.primaryImageSmall : "sinimagen.png"
+                    }" /> 
+                    <h4 class="titulo"> ${traducciones[0]} </h4> 
+                    <h6 class="cultura"> ${traducciones[1]} </h6> 
+                    <h6 class="dinastia"> ${traducciones[2]} </h6> 
+                </div>`;
+    
+                // Actualizar el HTML después de procesar cada objeto
+                document.getElementById("grilla").innerHTML = objetosHtml;
+                totalFetched++;
+    
+                if (totalFetched === objectIDs.length) {
+                    toggleButtons();  // Aquí activas/desactivas los botones si es necesario
+                }
+            });
+        }
+    }
+/*            .then((data) => {
                 objetosHtml += `<div class="objeto"> <img src="${
                     data.primaryImageSmall != ""
                     ? data.primaryImageSmall 
@@ -53,7 +82,7 @@ function fetchDepartamentos() {
             });
         }
     }
-
+*/
     fetchDepartamentos();
 
     fetch(URL_SEARCH_HAS_IMAGES)
