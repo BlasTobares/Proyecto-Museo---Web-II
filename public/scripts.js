@@ -11,6 +11,25 @@ const URL_SEARCH = "https://collectionapi.metmuseum.org/public/collection/v1/sea
 let PAGE = 0;
 const ITEMS_PER_PAGE = 20;
 
+async function translateText(text, targetLang) {
+    try {
+        const response = await fetch('/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: text, targetLang: targetLang })
+        });
+        const result = await response.json();
+        return result.translatedText;
+    } catch (error) {
+        console.error('Error al traducir el texto:', error);
+        return text; // Devuelve el texto original si hay un error
+ 
+        } 
+}
+
+
 function fetchDepartamentos() {
     fetch(URL_DEPARTAMENTOS)
     .then((response) => response.json())
@@ -25,6 +44,40 @@ function fetchDepartamentos() {
     });    
 });
 }
+async function fetchObjetos(objectIDs) {
+
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    const title = await translateText(data.title || 'Sin título', 'es');
+    const culture = await translateText(data.culture || 'N/A', 'es');
+    const dynasty = await translateText(data.dynasty || 'N/A', 'es');
+
+    for (objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+        .then((response) => response.json())
+        .then((data) => {
+            objetosHtml += `<div class="objeto"> <img src="${
+                data.primaryImageSmall != ""
+                ? data.primaryImageSmall 
+                : "sinimagen.png"
+            }" /> <h4 class="titulo"> ${title} </h4> <h6 class="cultura"> ${
+                culture != "" ? culture : "Sin cultura"
+            } </h6> <h6 class="dinastia"> ${
+                dynasty != "" ? dynasty : "Sin dinastia"
+            } </h6> </div>`;
+        document.getElementById("grilla").innerHTML = objetosHtml;
+        totalFetched++;
+
+        if (totalFetched === objectIDs.length) {
+            toggleButtons();
+        }
+        console.log(data.objectID);
+        });
+    }
+}
+
+/*
     function fetchObjetos(objectIDs) {
 
         let objetosHtml = "";
@@ -53,7 +106,7 @@ function fetchDepartamentos() {
             });
         }
     }
-
+*/
     fetchDepartamentos();
 
     fetch(URL_SEARCH_HAS_IMAGES)
@@ -125,7 +178,7 @@ function fetchDepartamentos() {
     
     // Inicializar con la primera página al cargar la página
     fetchPage(PAGE);
-    async function traducir(titulo, cultura, dinastia) {
+/*    async function traducir(titulo, cultura, dinastia) {
         try {
             const resp = await fetch('/traducir', {
                 method: 'POST',
@@ -152,7 +205,7 @@ function fetchDepartamentos() {
             console.error('Error en la traducción:', error);
         }
     }
-
+*/
 /*    async function traducir(titulo, cultura, dinastia) {
 
         const resp = await fetch('/traducir', {
@@ -223,7 +276,7 @@ function fetchDepartamentos() {
     }
 }
     */
-/*async function translateText(text, targetLang) {
+async function translateText(text, targetLang) {
     try {
         const response = await fetch('/translate', {
             method: 'POST',
@@ -241,4 +294,3 @@ function fetchDepartamentos() {
         } 
 }
 
-*/

@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-app.post("/traducir", (req, res) => {
+/*app.post("/traducir", (req, res) => {
     const { titulo, cultura, dinastia } = req.body;  
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '');
 
@@ -35,12 +35,12 @@ app.post("/traducir", (req, res) => {
         res.status(500).json({ error: 'Error al traducir', detalles: err });  // Respuesta en caso de error
     });
 });
-
+*/
 // Iniciar el servidor
-app.listen(port, () => {
+/*app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
-
+*/
 /*app.post("/traducir", (req, res) => {
     const { titulo, cultura, dinastia } = req.body;  
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '');
@@ -113,7 +113,7 @@ translate({
 });
 */
 
-/*app.post('/translate', (req, res) => {
+app.post('/translate', (req, res) => {
     const { text, targetLang } = req.body;
 
     translate({
@@ -128,7 +128,7 @@ translate({
         }
     });
 });
-*/
+
 
 
 app.get("/", (req, res) => {
