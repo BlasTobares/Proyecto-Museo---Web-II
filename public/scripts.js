@@ -48,6 +48,7 @@ async function fetchObjetos(objectIDs) {
 
     let objetosHtml = "";
     let totalFetched = 0;
+    const data = await response.json();
 
     const title = await translateText(data.title || 'Sin título', 'es');
     const culture = await translateText(data.culture || 'N/A', 'es');
