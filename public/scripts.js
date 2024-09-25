@@ -45,36 +45,44 @@ function fetchDepartamentos() {
 });
 }
 async function fetchObjetos(objectIDs) {
-
     let objetosHtml = "";
     let totalFetched = 0;
-    const data = await response.json();
 
-    const title = await translateText(data.title || 'Sin título', 'es');
-    const culture = await translateText(data.culture || 'N/A', 'es');
-    const dynasty = await translateText(data.dynasty || 'N/A', 'es');
+    for (const objectId of objectIDs) {
+        try {
+            // Fetch para obtener los datos del objeto
+            const response = await fetch(URL_OBJETO + objectId);
+            if (!response.ok) throw new Error('Error en la red'); // Manejo de errores
 
-    for (objectId of objectIDs) {
-        fetch(URL_OBJETO + objectId)
-        .then((response) => response.json())
-        .then((data) => {
-            objetosHtml += `<div class="objeto"> <img src="${
-                data.primaryImageSmall != ""
-                ? data.primaryImageSmall 
-                : "sinimagen.png"
-            }" /> <h4 class="titulo"> ${title} </h4> <h6 class="cultura"> ${
-                culture != "" ? culture : "Sin cultura"
-            } </h6> <h6 class="dinastia"> ${
-                dynasty != "" ? dynasty : "Sin dinastia"
-            } </h6> </div>`;
-        document.getElementById("grilla").innerHTML = objetosHtml;
-        totalFetched++;
+            const data = await response.json();
 
-        if (totalFetched === objectIDs.length) {
-            toggleButtons();
+            // Traducir título, cultura y dinastía
+            const title = await translateText(data.title || 'Sin título', 'es');
+            const culture = await translateText(data.culture || 'N/A', 'es');
+            const dynasty = await translateText(data.dynasty || 'N/A', 'es');
+
+            // Construir el HTML para cada objeto
+            objetosHtml += `
+                <div class="objeto">
+                    <img src="${data.primaryImageSmall !== "" ? data.primaryImageSmall : "sinimagen.png"}" />
+                    <h4 class="titulo">${title}</h4>
+                    <h6 class="cultura">${culture !== "" ? culture : "Sin cultura"}</h6>
+                    <h6 class="dinastia">${dynasty !== "" ? dynasty : "Sin dinastía"}</h6>
+                </div>
+            `;
+
+            totalFetched++;
+
+            // Actualiza el DOM después de cada fetch
+            document.getElementById("grilla").innerHTML = objetosHtml;
+
+            if (totalFetched === objectIDs.length) {
+                toggleButtons();
+            }
+            console.log(data.objectID);
+        } catch (error) {
+            console.error('Error al obtener objeto:', error);
         }
-        console.log(data.objectID);
-        });
     }
 }
 
