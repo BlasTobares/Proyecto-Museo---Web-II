@@ -223,7 +223,7 @@ function fetchObjetos(objectIDs) {
             tooltip.style.top = `${event.pageY + 10}px`;
         });
 
-        img.addEventListener('mouseout', function() {
+        img.addEventListener('hoverout', function() {
             const tooltip = document.getElementById('tooltip');
             tooltip.style.display = 'none';
         });
