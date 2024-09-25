@@ -45,7 +45,7 @@ translate({
 });
 */
 
-app.post('/translate', (req, res) => {
+/*app.post('/translate', (req, res) => {
     const { text, targetLang } = req.body;
 
     translate({
@@ -59,6 +59,20 @@ app.post('/translate', (req, res) => {
             res.status(500).json({ error: 'Error al traducir el texto' });
         }
     });
+});
+*/
+app.get("/departamento", (req, res) => {
+    fetch(URL_DEPARTAMENTOS)
+        .then((response) => response.json())
+        .then((data) => {
+            translate({
+                text: JSON.stringify(data),
+                source: 'en',
+                target: 'es'
+            }, function (result) {
+                res.send(JSON.parse(result.translation));
+            });
+        });
 });
 
 app.get("/", (req, res) => {
