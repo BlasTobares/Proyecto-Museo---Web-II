@@ -8,7 +8,8 @@ const URL_SEARCH_HAS_IMAGES = "https://collectionapi.metmuseum.org/public/collec
 
 const URL_SEARCH = "https://collectionapi.metmuseum.org/public/collection/v1/search";
 
-const PAGE = 0;
+let PAGE = 0;
+const ITEMS_PER_PAGE = 20;
 
 function fetchDepartamentos() {
     fetch(URL_DEPARTAMENTOS)
@@ -25,7 +26,10 @@ function fetchDepartamentos() {
 });
 }
     function fetchObjetos(objectIDs) {
+
         let objetosHtml = "";
+        let totalFetched = 0;
+
         for (objectId of objectIDs) {
             fetch(URL_OBJETO + objectId)
             .then((response) => response.json())
@@ -40,6 +44,11 @@ function fetchDepartamentos() {
                     data.dynasty != "" ? data.dynasty : "Sin dinastia"
                 } </h6> </div>`;
             document.getElementById("grilla").innerHTML = objetosHtml;
+            totalFetched++;
+
+            if (totalFetched === objectIDs.length) {
+                toggleButtons();
+            }
             console.log(data.objectID);
             });
         }
@@ -74,6 +83,48 @@ function fetchDepartamentos() {
 
              });
     });
+
+    function fetchPage(page) {
+        fetch(URL_SEARCH_HAS_IMAGES)
+            .then((response) => response.json())
+            .then((data) => {
+                const objectIDs = data.objectIDs;
+                const startIndex = page * ITEMS_PER_PAGE;
+                const endIndex = startIndex + ITEMS_PER_PAGE;
+                fetchObjetos(objectIDs.slice(startIndex, endIndex));
+            });
+    }
+    
+    document.getElementById("anterior").addEventListener("click", () => {
+        if (PAGE > 0) {
+            PAGE--;
+            fetchPage(PAGE);
+        }
+    });
+    
+    document.getElementById("siguiente").addEventListener("click", () => {
+        PAGE++;
+        fetchPage(PAGE);
+    });
+    
+    document.getElementById("buscar").addEventListener("click", (event) => {
+        event.preventDefault();
+        PAGE = 0; // Reiniciar a la primera página con la nueva búsqueda
+    
+        const departamento = document.getElementById("departamento").value;
+        const keyword = document.getElementById("keyword").value;
+        const localizacion = document.getElementById("localizacion").value;
+        const paramLocalizacion = localizacion !== "" ? `&geoLocalization=${localizacion}` : "";
+    
+        fetch(URL_SEARCH + `?q=${keyword}&departmentId=${departamento}${paramLocalizacion}`)
+            .then((response) => response.json())
+            .then((data) => {
+                fetchObjetos(data.objectIDs.slice(PAGE * ITEMS_PER_PAGE, (PAGE + 1) * ITEMS_PER_PAGE));
+            });
+    });
+    
+    // Inicializar con la primera página al cargar la página
+    fetchPage(PAGE);
 
 /*    async function traducir(titulo, cultura, dinastia) {
         const resp = await fetch('/traducir', {
