@@ -75,7 +75,7 @@ function fetchObjetos(objectIDs) {
                 <div class="objeto">
                     <img src="${
                         data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
-                    }" data-fecha="${data.objectDate != "" ? data.objectDate : "Sin fecha"}"/>
+                    }" />
                     <h4 class="titulo">${data.title}</h4>
                     <h6 class="cultura">${data.culture != "" ? data.culture : "Sin cultura"}</h6>
                     <h6 class="dinastia">${data.dynasty != "" ? data.dynasty : "Sin dinastia"}</h6>
@@ -165,10 +165,6 @@ function fetchObjetos(objectIDs) {
     // Inicializar con la primera página al cargar la página
     fetchPage(PAGE);
 
-
-
-
-
     function verMasImagenes(objectId) {
         const modal = document.getElementById("imageModal");
         const modalImages = document.getElementById("modal-images");
@@ -210,24 +206,6 @@ function fetchObjetos(objectIDs) {
             modal.style.display = "none";
         }
     };
-
-
-
-
-    document.querySelectorAll('.objeto img').forEach(img => {
-        img.addEventListener('mouseover', function() {
-            const tooltip = document.getElementById('tooltip');
-            tooltip.innerText = this.dataset.fecha;
-            tooltip.style.display = 'block';
-            tooltip.style.left = `${event.pageX + 10}px`;
-            tooltip.style.top = `${event.pageY + 10}px`;
-        });
-
-        img.addEventListener('mouseout', function() {
-            const tooltip = document.getElementById('tooltip');
-            tooltip.style.display = 'none';
-        });
-    });
 
 
 /*    async function fetchObjetos(objectIDs) {
@@ -281,6 +259,7 @@ function fetchObjetos(objectIDs) {
 
 
 
+
 /*    async function traducir(titulo, cultura, dinastia) {
         try {
             const resp = await fetch('/traducir', {
@@ -309,6 +288,9 @@ function fetchObjetos(objectIDs) {
         }
     }
 */
+
+
+
 /*    async function traducir(titulo, cultura, dinastia) {
 
         const resp = await fetch('/traducir', {
@@ -331,6 +313,8 @@ function fetchObjetos(objectIDs) {
             
     }
 /*
+
+
 
 
 /*async function traducir(titulo, cultura, dinastia) { 
@@ -357,6 +341,8 @@ function fetchObjetos(objectIDs) {
 }
     */
 
+
+
 /*async function traducir(texto) {
     try {
         const resp = await fetch(`/traducir/${encodeURIComponent(texto)}`, {
@@ -379,6 +365,11 @@ function fetchObjetos(objectIDs) {
     }
 }
     */
+
+
+
+
+
 
 /*
 async function translateText(text, targetLang) {
