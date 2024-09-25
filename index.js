@@ -6,9 +6,42 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-await traduccion(objetos);
-
 app.post("/traducir", (req, res) => {
+    const { titulo, cultura, dinastia } = req.body;  
+    const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '');
+
+    Promise.all(textos.map(texto =>
+        new Promise((resolve, reject) => {
+            translate({
+                text: texto,
+                source: 'en',
+                target: 'es'
+            }, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result.translation);
+                }
+            });
+        })
+    ))
+    .then(traducciones => {
+        res.json({
+            titulosTraducidos: traducciones
+        });
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Error al traducir', detalles: err });
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Servidor corriendo en el puerto ${port}`);
+});
+
+/*await traduccion(objetos);
+
+/*app.post("/traducir", (req, res) => {
 
     const { titulo, cultura, dinastia } = req.body;
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '')
@@ -30,7 +63,7 @@ app.post("/traducir", (req, res) => {
         });
     })
 });
-
+*/
 
 /*app.get("/traducir/:texto", (req, res) => {
     

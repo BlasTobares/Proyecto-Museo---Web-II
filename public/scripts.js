@@ -125,8 +125,35 @@ function fetchDepartamentos() {
     
     // Inicializar con la primera página al cargar la página
     fetchPage(PAGE);
-
     async function traducir(titulo, cultura, dinastia) {
+        try {
+            const resp = await fetch('/traducir', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    titulo,
+                    cultura,
+                    dinastia
+                })
+            });
+    
+            if (!resp.ok) {
+                throw new Error('Error al traducir');
+            }
+    
+            const data = await resp.json();
+            console.log(data.titulosTraducidos);  // Verifica las traducciones recibidas
+    
+            // Puedes utilizar las traducciones como desees en tu frontend.
+            return data.titulosTraducidos;
+        } catch (error) {
+            console.error('Error en la traducción:', error);
+        }
+    }
+
+/*    async function traducir(titulo, cultura, dinastia) {
 
         const resp = await fetch('/traducir', {
 
@@ -147,6 +174,7 @@ function fetchDepartamentos() {
             const data = await resp.json();
             
     }
+/*
 
 
 /*async function traducir(titulo, cultura, dinastia) { 
