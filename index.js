@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-app.post("/traducir", (req, res) => {
+/*app.post("/traducir", (req, res) => {
     const { titulo, cultura, dinastia } = req.body;
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '');
 
@@ -38,6 +38,7 @@ app.post("/traducir", (req, res) => {
         res.status(500).json({ error: "Error en la traducción: " + error });
     });
 });
+*/
 
 /*app.post('/traducir', (req, res) => {
 
@@ -66,6 +67,18 @@ app.post("/traducir", (req, res) => {
     })
 });
 */
+app.get("/traducir/:texto", (req, res) => {
+    
+    translate({
+        text: req.params.texto,
+        source: 'es',
+        target: 'en'
+      }, function(result) {
+        res.json({traduccion: result.translation});
+      });
+    
+    });
+
 app.get("/", (req, res) => {
     res.send('Hello World!');
 });
@@ -174,18 +187,17 @@ app.listen(port, () => {
 });
 */
 
-/*app.get("/traducir/:texto", (req, res) => {
+app.get("/traducir/:texto", (req, res) => {
     
-translate({
-    text: req.params.texto,
-    source: 'es',
-    target: 'en'
-  }, function(result) {
-    res.json({traduccion: result.translation});
-  });
-
-});
-*/
+    translate({
+        text: req.params.texto,
+        source: 'es',
+        target: 'en'
+      }, function(result) {
+        res.json({traduccion: result.translation});
+      });
+    
+    });
 
 /*app.post('/translate', (req, res) => {
     const { text, targetLang } = req.body;

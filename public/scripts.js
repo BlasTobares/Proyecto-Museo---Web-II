@@ -57,7 +57,7 @@ function fetchDepartamentos() {
     }
 */
 
-async function traducir(titulo, cultura, dinastia) {
+/*async function traducir(titulo, cultura, dinastia) {
     try {
         const resp = await fetch('/traducir', {
             method: 'POST',
@@ -81,6 +81,27 @@ async function traducir(titulo, cultura, dinastia) {
     } catch (error) {
         console.error('Error en la traducción:', error);
         return [titulo, cultura, dinastia]; // Devuelve valores originales en caso de error
+    }
+}
+    */
+async function traducir(texto) {
+    try {
+        const resp = await fetch(`/traducir/${encodeURIComponent(texto)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!resp.ok) {
+            throw new Error('Error al traducir');
+        }
+
+        const data = await resp.json();
+        return data.traduccion; // Devuelve la traducción recibida
+    } catch (error) {
+        console.error('Error en la traducción:', error);
+        return texto; // Devuelve el texto original en caso de error
     }
 }
 /*async function traducir(titulo, cultura, dinastia) {
@@ -148,8 +169,48 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
-*/
-function fetchObjetos(objectIDs) {
+    */
+    function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then(async (data) => {
+                // Obtener las traducciones
+                const tituloTraducido = await traducir(data.title) || data.title; // Traducir el título
+                const culturaTraducida = await traducir(data.culture) || data.culture || "Sin cultura"; // Traducir cultura
+                const dinastiaTraducida = await traducir(data.dynasty) || data.dynasty || "Sin dinastía"; // Traducir dinastía
+                
+                // Verificar si hay imágenes adicionales
+                let additionalImagesHtml = '';
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                }
+
+                // Construir el HTML de cada objeto con las traducciones
+                objetosHtml += `
+    <div class="objeto">
+        <img src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
+        <h4 class="titulo">${tituloTraducido}</h4>
+        <h6 class="cultura">${culturaTraducida}</h6>
+        <h6 class="dinastia">${dinastiaTraducida}</h6>
+        ${additionalImagesHtml}
+    </div>`;
+
+                // Actualizar el contenido de la grilla
+                document.getElementById("grilla").innerHTML = objetosHtml;
+                totalFetched++;
+
+                if (totalFetched === objectIDs.length) {
+                    toggleButtons();
+                }
+            });
+    }
+}
+
+/*function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -187,6 +248,7 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
+    */
 /*
 function fetchObjetos(objectIDs) {
     let objetosHtml = "";
