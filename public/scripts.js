@@ -92,7 +92,10 @@ function fetchObjetos(objectIDs) {
     for (let objectId of objectIDs) {
         fetch(URL_OBJETO + objectId)
             .then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
+
+                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty);
+
                 // Verificar si hay imágenes adicionales
                 let additionalImagesHtml = '';
                 if (data.additionalImages && data.additionalImages.length > 0) {
@@ -105,9 +108,9 @@ function fetchObjetos(objectIDs) {
                     <img src="${
                         data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
                     }" />
-                    <h4 class="titulo">${data.title}</h4>
-                    <h6 class="cultura">${data.culture != "" ? data.culture : "Sin cultura"}</h6>
-                    <h6 class="dinastia">${data.dynasty != "" ? data.dynasty : "Sin dinastia"}</h6>
+                    <h4 class="titulo">${titulosTraducidos[0]}</h4>
+                    <h6 class="cultura">${titulosTraducidos[1] != "" ? data.culture : "Sin cultura"}</h6>
+                    <h6 class="dinastia">${titulosTraducidos[2] != "" ? data.dynasty : "Sin dinastia"}</h6>
                     ${additionalImagesHtml}
                 </div>`;
 

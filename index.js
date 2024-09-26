@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
+
 app.post("/traducir", (req, res) => {
 
     const { titulo, cultura, dinastia } = req.body;
