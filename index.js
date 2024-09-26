@@ -6,6 +6,43 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
+app.post("/traducir", (req, res) => {
+
+    const { titulo, cultura, dinastia } = req.body;
+    const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '')
+
+    Promise.all(textos.map(texto => 
+        new Promise((resolve, reject) => {
+            translate({
+                text: texto,
+                source: 'en',
+                target: 'es'
+            }, (result) => {
+                resolve(result.translation);
+            });
+        })
+    ))
+    .then(traducciones => {
+        res.json({
+            titulosTraducidos: traducciones
+        });
+    })
+});
+
+app.get("/", (req, res) => {
+    res.send('Hello World!');
+});
+
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
+
+
+
+
+
 /*app.post("/traducir", (req, res) => {
     const { titulo, cultura, dinastia } = req.body;  
     const textos = [titulo, cultura, dinastia].filter(texto => texto.trim() !== '');
@@ -113,7 +150,7 @@ translate({
 });
 */
 
-app.post('/translate', (req, res) => {
+/*app.post('/translate', (req, res) => {
     const { text, targetLang } = req.body;
 
     translate({
@@ -128,15 +165,5 @@ app.post('/translate', (req, res) => {
         }
     });
 });
-
-
-
-app.get("/", (req, res) => {
-    res.send('Hello World!');
-});
-
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+*/
 
