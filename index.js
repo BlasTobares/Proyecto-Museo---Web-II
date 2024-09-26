@@ -67,7 +67,7 @@ app.use(express.json());
     })
 });
 */
-app.get("/traducir/:texto", (req, res) => {
+/*app.get("/traducir/:texto", (req, res) => {
     
     translate({
         text: req.params.texto,
@@ -78,6 +78,15 @@ app.get("/traducir/:texto", (req, res) => {
       });
     
     });
+*/
+app.post("/translate", (req, res) => {
+    const { text } = req.body;
+
+    translate({ text: text, target: 'es' }, (result) => {
+        res.json({ translatedText: result.translatedText });
+    });
+});
+
 
 app.get("/", (req, res) => {
     res.send('Hello World!');

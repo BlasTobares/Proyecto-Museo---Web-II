@@ -104,6 +104,7 @@ async function traducir(texto) {
         return texto; // Devuelve el texto original en caso de error
     }
 }
+
 /*async function traducir(titulo, cultura, dinastia) {
     try {
         const resp = await fetch('/traducir', {
@@ -131,7 +132,7 @@ async function traducir(texto) {
         console.error('Error en la traducción:', error);
     }
 }
-/*
+/* FUNCION QUE FUNCIONA SIN TRADUCCION TODAVIA
 function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
@@ -170,7 +171,7 @@ function fetchObjetos(objectIDs) {
     }
 }
     */
-    function fetchObjetos(objectIDs) {
+/*    function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -208,6 +209,61 @@ function fetchObjetos(objectIDs) {
                 }
             });
     }
+}
+    */
+
+// ultima actualizacion 
+async function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    for (let objectId of objectIDs) {
+        const response = await fetch(URL_OBJETO + objectId);
+        const data = await response.json();
+
+        // Traducción de título, cultura y dinastía
+        const titleTranslation = await translateText(data.title);
+        const cultureTranslation = await translateText(data.culture || "Sin cultura");
+        const dynastyTranslation = await translateText(data.dynasty || "Sin dinastía");
+
+        // Verificar si hay imágenes adicionales
+        let additionalImagesHtml = '';
+        if (data.additionalImages && data.additionalImages.length > 0) {
+            additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+        }
+
+        // Construir el HTML de cada objeto
+        objetosHtml += `
+        <div class="objeto">
+            <img src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
+            <h4 class="titulo">${titleTranslation}</h4>
+            <h6 class="cultura">${cultureTranslation}</h6>
+            <h6 class="dinastia">${dynastyTranslation}</h6>
+            ${additionalImagesHtml}
+        </div>`;
+
+        // Actualizar el contenido de la grilla
+        document.getElementById("grilla").innerHTML = objetosHtml;
+        totalFetched++;
+
+        if (totalFetched === objectIDs.length) {
+            toggleButtons();
+        }
+    }
+}
+
+// Función para traducir texto
+async function translateText(text) {
+    const response = await fetch("/translate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+    });
+
+    const result = await response.json();
+    return result.translatedText;
 }
 
 /*function fetchObjetos(objectIDs) {
