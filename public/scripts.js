@@ -84,8 +84,8 @@ async function traducir(titulo, cultura, dinastia) {
         console.error('Error en la traducción:', error);
     }
 }
-
-/*function fetchObjetos(objectIDs) {
+/*
+function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -93,8 +93,6 @@ async function traducir(titulo, cultura, dinastia) {
         fetch(URL_OBJETO + objectId)
             .then((response) => response.json())
             .then(async (data) => {
-
-                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty);
 
                 // Verificar si hay imágenes adicionales
                 let additionalImagesHtml = '';
@@ -108,9 +106,9 @@ async function traducir(titulo, cultura, dinastia) {
                     <img src="${
                         data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
                     }" />
-                    <h4 class="titulo">${titulosTraducidos[0]}</h4>
-                    <h6 class="cultura">${titulosTraducidos[1] != "" ? data.culture : "Sin cultura"}</h6>
-                    <h6 class="dinastia">${titulosTraducidos[2] != "" ? data.dynasty : "Sin dinastia"}</h6>
+                    <h4 class="titulo">${data.title}</h4>
+                    <h6 class="cultura">${data.culture != "" ? data.culture : "Sin cultura"}</h6>
+                    <h6 class="dinastia">${data.dynasty != "" ? data.dynasty : "Sin dinastia"}</h6>
                     ${additionalImagesHtml}
                 </div>`;
 
@@ -124,7 +122,7 @@ async function traducir(titulo, cultura, dinastia) {
             });
     }
 }
-    */
+*/
 function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
@@ -134,7 +132,12 @@ function fetchObjetos(objectIDs) {
             .then((response) => response.json())
             .then(async (data) => {
                 // Obtener las traducciones
-                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty);
+                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty) || [];
+    
+    // Verificar si titulosTraducidos tiene contenido
+                const tituloTraducido = titulosTraducidos[0] || data.title;
+                const culturaTraducida = titulosTraducidos[1] || data.culture || "Sin cultura";
+                const dinastiaTraducida = titulosTraducidos[2] || data.dynasty || "Sin dinastía";
                 
                 // Verificar si hay imágenes adicionales
                 let additionalImagesHtml = '';
@@ -144,13 +147,13 @@ function fetchObjetos(objectIDs) {
 
                 // Construir el HTML de cada objeto con las traducciones
                 objetosHtml += `
-                <div class="objeto">
-                    <img src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
-                    <h4 class="titulo">${titulosTraducidos[0] || data.title}</h4> <!-- Usar traducción o el original -->
-                    <h6 class="cultura">${titulosTraducidos[1] || data.culture || "Sin cultura"}</h6>
-                    <h6 class="dinastia">${titulosTraducidos[2] || data.dynasty || "Sin dinastía"}</h6>
-                    ${additionalImagesHtml}
-                </div>`;
+    <div class="objeto">
+        <img src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
+        <h4 class="titulo">${tituloTraducido}</h4>
+        <h6 class="cultura">${culturaTraducida}</h6>
+        <h6 class="dinastia">${dinastiaTraducida}</h6>
+        ${additionalImagesHtml}
+    </div>`;
 
                 // Actualizar el contenido de la grilla
                 document.getElementById("grilla").innerHTML = objetosHtml;
