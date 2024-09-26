@@ -85,7 +85,7 @@ async function traducir(titulo, cultura, dinastia) {
     }
 }
 
-function fetchObjetos(objectIDs) {
+/*function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -111,6 +111,44 @@ function fetchObjetos(objectIDs) {
                     <h4 class="titulo">${titulosTraducidos[0]}</h4>
                     <h6 class="cultura">${titulosTraducidos[1] != "" ? data.culture : "Sin cultura"}</h6>
                     <h6 class="dinastia">${titulosTraducidos[2] != "" ? data.dynasty : "Sin dinastia"}</h6>
+                    ${additionalImagesHtml}
+                </div>`;
+
+                // Actualizar el contenido de la grilla
+                document.getElementById("grilla").innerHTML = objetosHtml;
+                totalFetched++;
+
+                if (totalFetched === objectIDs.length) {
+                    toggleButtons();
+                }
+            });
+    }
+}
+    */
+function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then(async (data) => {
+                // Obtener las traducciones
+                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty);
+                
+                // Verificar si hay imágenes adicionales
+                let additionalImagesHtml = '';
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                }
+
+                // Construir el HTML de cada objeto con las traducciones
+                objetosHtml += `
+                <div class="objeto">
+                    <img src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
+                    <h4 class="titulo">${titulosTraducidos[0] || data.title}</h4> <!-- Usar traducción o el original -->
+                    <h6 class="cultura">${titulosTraducidos[1] || data.culture || "Sin cultura"}</h6>
+                    <h6 class="dinastia">${titulosTraducidos[2] || data.dynasty || "Sin dinastía"}</h6>
                     ${additionalImagesHtml}
                 </div>`;
 
