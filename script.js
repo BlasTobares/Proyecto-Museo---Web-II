@@ -1,4 +1,4 @@
-/*const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
+const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
 
 const URL_OBJETOS = "https://collectionapi.metmuseum.org/public/collection/v1/objects";  
 
@@ -30,7 +30,7 @@ function fetchDepartamentos() {
 
 
 // FUNCION QUE FUNCIONA SIN TRADUCCION TODAVIA
-function fetchObjetos(objectIDs) {
+/*function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -67,7 +67,59 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
+*/
+function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
 
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then((data) => {
+                const textoParaTraducir = {
+                    titulo: data.title || "",
+                    cultura: data.culture || "Sin cultura",
+                    dinastia: data.dynasty || "Sin dinastía"
+                };
+
+                // Enviar al backend para la traducción
+                fetch("/traducir", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(textoParaTraducir),
+                })
+                .then((response) => response.json())
+                .then((translatedData) => {
+                    // Construir el HTML con los textos traducidos
+                    let additionalImagesHtml = '';
+                    if (data.additionalImages && data.additionalImages.length > 0) {
+                        additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                    }
+
+                    objetosHtml += `
+                    <div class="objeto">
+                        <img src="${
+                            data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
+                        }" />
+                        <h4 class="titulo">${translatedData.titulosTraducidos.titulo}</h4>
+                        <h6 class="cultura">${translatedData.titulosTraducidos.cultura}</h6>
+                        <h6 class="dinastia">${translatedData.titulosTraducidos.dinastia}</h6>
+                        ${additionalImagesHtml}
+                    </div>`;
+
+                    // Actualizar la grilla con los objetos traducidos
+                    document.getElementById("grilla").innerHTML = objetosHtml;
+                    totalFetched++;
+
+                    if (totalFetched === objectIDs.length) {
+                        toggleButtons();
+                    }
+                });
+            });
+    }
+}
     fetchDepartamentos();
 
     fetch(URL_SEARCH_HAS_IMAGES)
@@ -182,4 +234,3 @@ function fetchObjetos(objectIDs) {
             modal.style.display = "none";
         }
     };
-    */
