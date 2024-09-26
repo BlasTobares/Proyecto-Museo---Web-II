@@ -36,7 +36,7 @@ function fetchObjetos(objectIDs) {
     for (let objectId of objectIDs) {
         fetch(URL_OBJETO + objectId)
             .then((response) => response.json())
-            .then(async (data) => {
+            .then((data) => {
 
                 // Verificar si hay imágenes adicionales
                 let additionalImagesHtml = '';
