@@ -28,6 +28,7 @@ function fetchDepartamentos() {
 }
 
 
+
 // FUNCION QUE FUNCIONA SIN TRADUCCION TODAVIA
 function fetchObjetos(objectIDs) {
     let objetosHtml = "";
