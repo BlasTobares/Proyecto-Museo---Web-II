@@ -27,10 +27,60 @@ function fetchDepartamentos() {
 });
 }
 
+function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
 
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then((data) => {
+                // Verificar si hay imágenes adicionales
+                let additionalImagesHtml = '';
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                }
+
+                // Enviar datos para traducción
+                return fetch('/traducir', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        titulo: data.title,
+                        cultura: data.culture,
+                        dinastia: data.dynasty,
+                    }),
+                })
+                .then(response => response.json())
+                .then(translatedData => {
+                    const [tituloTraducido, culturaTraducida, dinastiaTraducida] = translatedData.titulosTraducidos;
+
+                    // Construir el HTML de cada objeto con las traducciones
+                    objetosHtml += `
+                    <div class="objeto">
+                        <img title="${data.objectDate}" src="${data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"}" />
+                        <h4 class="titulo">${tituloTraducido}</h4>
+                        <h6 class="cultura">${culturaTraducida !== "" ? culturaTraducida : "Sin cultura"}</h6>
+                        <h6 class="dinastia">${dinastiaTraducida !== "" ? dinastiaTraducida : "Sin dinastia"}</h6>
+                        ${additionalImagesHtml}
+                    </div>`;
+
+                    // Actualizar el contenido de la grilla
+                    document.getElementById("grilla").innerHTML = objetosHtml;
+                    totalFetched++;
+
+                    if (totalFetched === objectIDs.length) {
+                        toggleButtons();
+                    }
+                });
+            });
+    }
+}
 
 // FUNCION QUE FUNCIONA SIN TRADUCCION TODAVIA
-function fetchObjetos(objectIDs) {
+/*function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -67,6 +117,7 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
+    */
 
     fetchDepartamentos();
 
