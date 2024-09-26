@@ -86,7 +86,7 @@
         background-color: var(--disabled-color);
     }
 
-input {
+.input {
     padding: 10px;
     border-radius: 5px;
     border: none;
