@@ -77,6 +77,32 @@ async function traducir(titulo, cultura, dinastia) {
 
         const data = await resp.json();
         console.log(data.titulosTraducidos);  // Verifica las traducciones recibidas
+        return data.titulosTraducidos;
+    } catch (error) {
+        console.error('Error en la traducción:', error);
+        return [titulo, cultura, dinastia]; // Devuelve valores originales en caso de error
+    }
+}
+/*async function traducir(titulo, cultura, dinastia) {
+    try {
+        const resp = await fetch('/traducir', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo,
+                cultura,
+                dinastia
+            })
+        });
+
+        if (!resp.ok) {
+            throw new Error('Error al traducir');
+        }
+
+        const data = await resp.json();
+        console.log(data.titulosTraducidos);  // Verifica las traducciones recibidas
 
         // Puedes utilizar las traducciones como desees en tu frontend.
         return data.titulosTraducidos;
@@ -134,6 +160,45 @@ function fetchObjetos(objectIDs) {
                 // Obtener las traducciones
                 const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty) || [];
     
+                const tituloTraducido = titulosTraducidos[0] || "Sin título";
+                const culturaTraducida = titulosTraducidos[1] || "Sin cultura";
+                const dinastiaTraducida = titulosTraducidos[2] || "Sin dinastía";
+                
+                let additionalImagesHtml = '';
+                if (data.additionalImages && data.additionalImages.length > 0) {
+                    additionalImagesHtml = `<button onclick="verMasImagenes(${objectId})">Ver más imágenes</button>`;
+                }
+
+                objetosHtml += `
+    <div class="objeto">
+        <img src="${data.primaryImageSmall || "sinimagen.png"}" />
+        <h4 class="titulo">${tituloTraducido}</h4>
+        <h6 class="cultura">${culturaTraducida}</h6>
+        <h6 class="dinastia">${dinastiaTraducida}</h6>
+        ${additionalImagesHtml}
+    </div>`;
+
+                document.getElementById("grilla").innerHTML = objetosHtml;
+                totalFetched++;
+
+                if (totalFetched === objectIDs.length) {
+                    toggleButtons();
+                }
+            });
+    }
+}
+/*
+function fetchObjetos(objectIDs) {
+    let objetosHtml = "";
+    let totalFetched = 0;
+
+    for (let objectId of objectIDs) {
+        fetch(URL_OBJETO + objectId)
+            .then((response) => response.json())
+            .then(async (data) => {
+                // Obtener las traducciones
+                const titulosTraducidos = await traducir(data.title, data.culture, data.dynasty) || [];
+    
     // Verificar si titulosTraducidos tiene contenido
                 const tituloTraducido = titulosTraducidos[0] || data.title;
                 const culturaTraducida = titulosTraducidos[1] || data.culture || "Sin cultura";
@@ -165,6 +230,7 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
+    */
 
     fetchDepartamentos();
 
@@ -324,44 +390,6 @@ function fetchObjetos(objectIDs) {
     }
 
 */
-
-
-
-
-
-
-
-
-
-    async function traducir(titulo, cultura, dinastia) {
-        try {
-            const resp = await fetch('/traducir', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    titulo,
-                    cultura,
-                    dinastia
-                })
-            });
-    
-            if (!resp.ok) {
-                throw new Error('Error al traducir');
-            }
-    
-            const data = await resp.json();
-            console.log(data.titulosTraducidos);  // Verifica las traducciones recibidas
-    
-            // Puedes utilizar las traducciones como desees en tu frontend.
-            return data.titulosTraducidos;
-        } catch (error) {
-            console.error('Error en la traducción:', error);
-        }
-    }
-
-
 
 
 /*    async function traducir(titulo, cultura, dinastia) {
