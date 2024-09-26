@@ -1,4 +1,4 @@
-/*const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
+const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
 
 const URL_OBJETOS = "https://collectionapi.metmuseum.org/public/collection/v1/objects";  
 
@@ -182,4 +182,4 @@ function fetchObjetos(objectIDs) {
             modal.style.display = "none";
         }
     };
-    */
+    
