@@ -67,7 +67,6 @@ function fetchObjetos(objectIDs) {
     }
 }
 
-
     fetchDepartamentos();
 
     fetch(URL_SEARCH_HAS_IMAGES)

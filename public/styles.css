@@ -86,8 +86,16 @@
         background-color: var(--disabled-color);
     }
 
-
-
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
 
 
 
