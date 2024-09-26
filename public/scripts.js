@@ -48,7 +48,7 @@ function fetchObjetos(objectIDs) {
                 // Construir el HTML de cada objeto
                 objetosHtml += `
                 <div class="objeto">
-                    <img src="${
+                    <img title="${data.objectDate}" src="${
                         data.primaryImageSmall != "" ? data.primaryImageSmall : "sinimagen.png"
                     }" />
                     <h4 class="titulo">${data.title}</h4>
