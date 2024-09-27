@@ -27,7 +27,7 @@ function fetchDepartamentos() {
 });
 }
 
-function fetchObjetos(objectIDs) {
+/*function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -78,9 +78,10 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
+    */
 
 // FUNCION QUE FUNCIONA SIN TRADUCCION TODAVIA
-/*function fetchObjetos(objectIDs) {
+function fetchObjetos(objectIDs) {
     let objetosHtml = "";
     let totalFetched = 0;
 
@@ -117,7 +118,6 @@ function fetchObjetos(objectIDs) {
             });
     }
 }
-    */
 
     fetchDepartamentos();
 
